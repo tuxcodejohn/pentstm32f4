@@ -99,12 +99,12 @@ int main(void)
 
 		char string[100];
 
-		sprintf(string,"SystemCoreClock: %u \n",SystemCoreClock);
+		sprintf(string,"SystemCoreClock: %u \n\r",SystemCoreClock);
 		USART_puts(string);
-		sprintf(string,"RCC_Clocks.HCLK_Frequency: %u \n",RCC_Clocks.HCLK_Frequency);
+		sprintf(string,"RCC_Clocks.HCLK_Frequency: %u \n\r",RCC_Clocks.HCLK_Frequency);
 		USART_puts(string);
 
-		sprintf(string,"ticks: %u \n",tick);
+		sprintf(string,"ticks: %u \n\r",tick);
 		USART_puts(string);
 
 
@@ -126,7 +126,7 @@ int main(void)
 		/* Insert delay */
 	//	Delay(200);
 
-		/* PD15 to be toggled */
+	
 		GPIO_SetBits(GPIOD, GPIO_Pin_15);
 
 		/* Insert delay */
