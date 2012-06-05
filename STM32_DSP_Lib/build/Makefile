@@ -1,13 +1,14 @@
 LIB = libSTM32_DSP_Lib.a
 
-CC = arm-none-eabi-gcc
+CC = clang -ccc-host-triple armv7m-none-eabi -mthumb -mcpu=cortex-m4  -ccc-gcc-name arm-none-eabi-gcc
+
 AR = arm-none-eabi-ar
 RANLIB = arm-none-eabi-ranlib
 
 CFLAGS = -Wall -O2 -mlittle-endian -mthumb
 CFLAGS += -mcpu=cortex-m4 -ffreestanding -nostdlib -fno-strict-aliasing -ffunction-sections
 CFLAGS += -funsigned-char -Wundef -Wunreachable-code -Wstrict-prototypes
-CFLAGS += -I../inc -Wa,-adhlns=$(<:.c=.lst) -mfpu=fpv4-sp-d16 -mfloat-abi=hard -Wl,--gc-sections -fsingle-precision-constant 
+CFLAGS += -I../inc -mfloat-abi=hard -Wl,--gc-sections -fsingle-precision-constant 
 CFLAGS += -DARM_MATH_CM4 -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__FPU_PRESENT=1 
 
 SRCS=$(wildcard ../src/BasicMathFunctions/*.c ../src/CommonTables/*.c ../src/ComplexMathFunctions/*.c ../src/ControllerFunctions/*.c ../src/FastMathFunctions/*.c ../src/FilteringFunctions/*.c ../src/MatrixFunctions/*.c ../src/StatisticsFunctions/*.c ../src/SupportFunctions/*.c ../src/TransformFunctions/*.c ../src/Common/*.c) 

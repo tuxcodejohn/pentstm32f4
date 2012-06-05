@@ -1,11 +1,11 @@
 LIB = libSTM32F4xx_StdPeriph_Driver.a
 
-CC = arm-none-eabi-gcc
+CC = clang -ccc-host-triple armv7m-none-eabi -mthumb -mcpu=cortex-m4  -ccc-gcc-name arm-none-eabi-gcc
 AR = arm-none-eabi-ar
 RANLIB = arm-none-eabi-ranlib
 
 CFLAGS = -Wall -O2 -mlittle-endian -mthumb
-CFLAGS += -mcpu=cortex-m4 -ffreestanding -nostdlib -mfpu=fpv4-sp-d16 -mfloat-abi=hard -Wl,--gc-sections -fsingle-precision-constant -funsigned-char -Wundef -Wsign-compare -Wunreachable-code -Wstrict-prototypes
+CFLAGS += -mcpu=cortex-m4 -ffreestanding -nostdlib  -mfloat-abi=hard -Wl,--gc-sections -fsingle-precision-constant -funsigned-char -Wundef -Wsign-compare -Wunreachable-code -Wstrict-prototype
 CFLAGS += -I../inc -I../inc/device_support -I../inc/core_support -I../../core
 
 SRCS = \

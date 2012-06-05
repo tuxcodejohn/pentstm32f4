@@ -23,12 +23,12 @@ OBJECTS= $(SRC:.c=.o) $(ASRC:.s=.o)
 LSTFILES= $(SRC:.c=.lst)
 HEADERS=$(wildcard core/*.h *.h)
 
-#  Compiler Options
-GCFLAGS=  -g $(OPTIMIZATION) -mlittle-endian -mthumb -Icore -I. -Iusb
+##  Compiler Options
+GCFLAGS=  -g $(OPTIMIZATION) -mlittle-endian -mthumb -Icore -Icore/inc -I. -Iusb
 GCFLAGS+= -funsigned-char -Wundef -Wsign-compare -Wunreachable-code -Wstrict-prototypes
-GCFLAGS+= -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -Wl,--gc-sections -fsingle-precision-constant -DARM_MATH_CM4 
-GCFLAGS+= -Wa,-adhlns=$(<:.c=.lst)
-GCFLAGS+= -ffreestanding -nostdlib -Wa,-adhlns=$(<:.c=.lst) -fno-math-errno
+#GCFLAGS+= -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -Wl,--gc-sections -fsingle-precision-constant -DARM_MATH_CM4 
+#GCFLAGS+= -Wa,-adhlns=$(<:.c=.lst)
+GCFLAGS+= -ffreestanding -nostdlib -fno-math-errno
 
 # stm32f4_discovery lib
 GCFLAGS+=-ISTM32_DSP_Lib/inc
@@ -40,13 +40,14 @@ GCFLAGS+=-ISTM32F4xx_StdPeriph_Driver/inc/core_support
 # -ffunction-sections -fdata-sections -fmessage-length=0   -fno-builtin
 
 
-LDFLAGS = -mcpu=cortex-m4 -mthumb $(OPTIMIZATION) -nostartfiles  -T$(LSCRIPT) 
+#LDFLAGS = -mcpu=cortex-m4 -mthumb $(OPTIMIZATION) -nostartfiles  -T$(LSCRIPT) 
 LDFLAGS+= -LSTM32F4xx_StdPeriph_Driver/build -lSTM32F4xx_StdPeriph_Driver
 LDFLAGS+= -LSTM32_DSP_Lib/build -lSTM32_DSP_Lib  
 
 #  Compiler/Assembler Paths
-GCC = arm-none-eabi-gcc
+GCC = clang -ccc-host-triple armv7m-none-eabi -mthumb -mcpu=cortex-m4  -ccc-gcc-name arm-none-eabi-gcc
 AS = arm-none-eabi-as
+
 OBJCOPY = arm-none-eabi-objcopy
 REMOVE = rm -f
 SIZE = arm-none-eabi-size

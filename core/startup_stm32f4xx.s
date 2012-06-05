@@ -38,7 +38,8 @@
     
   .syntax unified
   .cpu cortex-m4
-  .fpu fpv4-sp-d16
+/*  .fpu fpv4-sp-d16 */
+.fpu vfpv2
   .thumb
 
 .global  g_pfnVectors
