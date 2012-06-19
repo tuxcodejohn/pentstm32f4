@@ -150,22 +150,22 @@ int main(void)
 	while (1)
 	{
 		TIM_SetCompare2(TIM2,sin(winkel)*800+2400);
-		Delay(3);
+		Delay(2);
 		winkel+=0.001;
 		if (winkel==3.14*2) {
 			winkel=0;
 		}
 		if (winkel==1) {
-			setLed(1,1);
+			setLed(1,0);
 		}
 		if (winkel==2) {
-			setLed(2,1);
+			setLed(2,0);
 		}
 		if (winkel==3) {
-			setLed(3,1);
+			setLed(3,0);
 		}
 		if (winkel==4) {
-			setLed(4,1);
+			setLed(4,0);
 		}	
 		if (winkel==5) {
 			setLed(1,1);
