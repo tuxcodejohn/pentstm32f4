@@ -26,7 +26,7 @@ HEADERS=$(wildcard core/*.h *.h)
 #  Compiler Options
 GCFLAGS=  -g $(OPTIMIZATION) -mlittle-endian -mthumb -Icore -I. -Iusb
 GCFLAGS+= -funsigned-char -Wundef -Wsign-compare -Wunreachable-code -Wstrict-prototypes
-GCFLAGS+= -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -Wl,--gc-sections -fsingle-precision-constant -DARM_MATH_CM4 
+GCFLAGS+= -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -Wl,--gc-sections -fsingle-precision-constant -DARM_MATH_CM4 
 GCFLAGS+= -Wa,-adhlns=$(<:.c=.lst)
 GCFLAGS+= -ffreestanding -nostdlib -Wa,-adhlns=$(<:.c=.lst) -fno-math-errno
 
@@ -93,7 +93,7 @@ clean:
 
 #########################################################################
 
-flash: tools/flash/st-flash all
+flash: tools/flash/st-flash
 
 	tools/flash/st-flash write $(PROJECT).bin 0x08000000 
 
