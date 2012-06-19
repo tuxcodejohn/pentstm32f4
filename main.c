@@ -92,6 +92,37 @@ int main(void)
 	USART_Init(USART1, &USART_InitStructure);
 	USART_Cmd(USART1, ENABLE);
 
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+
+	GPIO_InitStructureTimer.GPIO_Pin = GPIO_Pin_3;
+	GPIO_InitStructureTimer.GPIO_Mode = GPIO_Mode_AF;
+	GPIO_InitStructureTimer.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_InitStructureTimer.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructureTimer.GPIO_PuPd = GPIO_PuPd_UP ;
+	GPIO_Init(GPIOB, &GPIO_InitStructureTimer);
+	GPIO_PinAFConfig(GPIOB, GPIO_PinSource3, GPIO_AF_TIM2);
+
+	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+	TIM_OCInitTypeDef TIM_OCInitStructure;
+
+	TIM_TimeBaseStructure.TIM_Period = 32000; // auto reaload register
+	TIM_TimeBaseStructure.TIM_Prescaler = 0;
+	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+
+	TIM_PrescalerConfig(TIM2, 19, TIM_PSCReloadMode_Immediate);
+	TIM_Cmd(TIM2,ENABLE);
+
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Timing ;
+	TIM_OCInitStructure.TIM_OutputState = TIM_Channel_1;
+	TIM_OCInitStructure.TIM_Pulse = 0;
+	TIM_OC1Init(TIM2, &TIM_OCInitStructure);
+	TIM_OC1PreloadConfig(TIM2, TIM_OCPreload_Disable); 
+
+
+
 	while (1)
 	{
 		USART_puts("test\n");
@@ -111,29 +142,29 @@ int main(void)
 		GPIO_SetBits(GPIOD, GPIO_Pin_12);
 
 		/* Insert delay */
-	//	Delay(200);
+		//	Delay(200);
 
 		/* PD13 to be toggled */
 		GPIO_SetBits(GPIOD, GPIO_Pin_13);
 
 		/* Insert delay */
-	//	Delay(200);
+		//	Delay(200);
 
 		/* PD14 to be toggled */
 		GPIO_SetBits(GPIOD, GPIO_Pin_14);
 
 		/* Insert delay */
-	//	Delay(200);
+		//	Delay(200);
 
 		/* PD15 to be toggled */
 		GPIO_SetBits(GPIOD, GPIO_Pin_15);
 
 		/* Insert delay */
-	//	Delay(200);
+		//	Delay(200);
 
 		GPIO_ResetBits(GPIOD, GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15);
 
 		/* Insert delay */
-	//	Delay(1000);
+		//	Delay(1000);
 	}
 }
