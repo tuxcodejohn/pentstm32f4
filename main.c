@@ -117,39 +117,40 @@ int main(void)
 	TIM_OC1PreloadConfig(TIM2, TIM_OCPreload_Disable); 
 */
 
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
-        RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);	// GPIOB gets system clock
+        RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);	// TIM2 gets system clock
 
         GPIO_InitStructureTimer.GPIO_Pin = GPIO_Pin_3;
-        GPIO_InitStructureTimer.GPIO_Mode = GPIO_Mode_AF;
+        GPIO_InitStructureTimer.GPIO_Mode = GPIO_Mode_AF;	// alternate function
         GPIO_InitStructureTimer.GPIO_Speed = GPIO_Speed_100MHz;
-        GPIO_InitStructureTimer.GPIO_OType = GPIO_OType_PP;
-        GPIO_InitStructureTimer.GPIO_PuPd = GPIO_PuPd_UP;
+        GPIO_InitStructureTimer.GPIO_OType = GPIO_OType_PP;     // set output type to pushpull 
+        GPIO_InitStructureTimer.GPIO_PuPd = GPIO_PuPd_UP;	// ?
         GPIO_Init(GPIOB, &GPIO_InitStructureTimer);
 
-        GPIO_PinAFConfig(GPIOB, GPIO_PinSource3, GPIO_AF_TIM2);
+	// TIM2 is a 32 bit timer
+        GPIO_PinAFConfig(GPIOB, GPIO_PinSource3, GPIO_AF_TIM2);	// alternate function TIM2 gets selected
 
         TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
         TIM_OCInitTypeDef TIM_OCInitStructure;
 
-        TIM_TimeBaseStructure.TIM_Period = 32000; // auto reaload register
-        TIM_TimeBaseStructure.TIM_Prescaler = 0;
-        TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-        TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-        TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+        TIM_TimeBaseStructure.TIM_Period = 32000; 		// TIM2 upper limit, reset after overflow
+        TIM_TimeBaseStructure.TIM_Prescaler = 0;		// value between 0 and 65535, will be set to 52 later but we need this step. timerclock=systemclock/(prescaler+1)
+        TIM_TimeBaseStructure.TIM_ClockDivision = 0;		// ?
+        TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;	// TIM counts upwards -_-
+        TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);			// activate all
 
-        TIM_PrescalerConfig(TIM2, 52, TIM_PSCReloadMode_Immediate);
+        TIM_PrescalerConfig(TIM2, 52, TIM_PSCReloadMode_Immediate);	// roughly 50Hz or 20ms
 
-        TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
-        TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-        TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
-	TIM_OCInitStructure.TIM_Pulse = 1000;
-        TIM_OC2Init(TIM2, &TIM_OCInitStructure);
-        TIM_OC2PreloadConfig(TIM2, TIM_OCPreload_Enable);
+        TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;		// outputcomparemode set to PWM mode 1, output is high as long as counter<pulse
+        TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;	// output gets enabled
+        TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;	// set pulse to high polarity (invert by setting High to Low)
+	TIM_OCInitStructure.TIM_Pulse = 1000;				// duty cycle=pulse/period
+        TIM_OC2Init(TIM2, &TIM_OCInitStructure);			// activate all
+        TIM_OC2PreloadConfig(TIM2, TIM_OCPreload_Enable);		// ?
 
 
-        TIM_ARRPreloadConfig(TIM2, ENABLE);
-        TIM_Cmd(TIM2,ENABLE);
+        TIM_ARRPreloadConfig(TIM2, ENABLE);	// ?
+        TIM_Cmd(TIM2,ENABLE);			// start timer
         uint32_t winkel = 0;
         int led = 0;
 
