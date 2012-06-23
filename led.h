@@ -23,7 +23,7 @@
 
 void initLEDs(void);
 
-int setLed(const unsigned int leds, const unsigned int state)
+int setLed(const unsigned int leds, const unsigned int state);
 
 #endif //LED_H_ 
 

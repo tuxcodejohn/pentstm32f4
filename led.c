@@ -1,5 +1,6 @@
-#include "main.h"
 
+#include "main.h"
+#include "led.h"
 
 void initLEDs(void)
 {
@@ -26,7 +27,7 @@ setLed(const unsigned int leds, const unsigned int state)
 	if (state) {
 		GPIO_SetBits(LEDS_GPIO_PORT,leds);
 	} else {
-		GPIO_ResetBits(GPIOD, GPIO_Pin_11 << led);
+		GPIO_ResetBits(LEDS_GPIO_PORT ,leds);
 	}
 }
 
