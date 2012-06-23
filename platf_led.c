@@ -1,6 +1,6 @@
 
 #include "main.h"
-#include "led.h"
+#include "platf_led.h"
 
 void initLEDs(void)
 {
