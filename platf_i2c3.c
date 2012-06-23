@@ -29,7 +29,6 @@ void i2cinit(void)
 	RCC_AHB1PeriphClockCmd((RCC_AHB1Periph_GPIOC | RCC_AHB1Periph_GPIOA), ENABLE);
 
 	/* I2C3 peripheral configuration */
-	I2C_DeInit(I2C3);
 	I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
 	I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
 	I2C_InitStructure.I2C_OwnAddress1 = 0xa3;
@@ -37,8 +36,9 @@ void i2cinit(void)
 	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
 	I2C_InitStructure.I2C_ClockSpeed = confd_i2c3_clockspeed;
 	/* Enable the I2C peripheral */
-	I2C_Cmd(I2C3, ENABLE);  
+	I2C_DeInit(I2C3);
 	I2C_Init(I2C3, &I2C_InitStructure);
+	I2C_Cmd(I2C3, ENABLE);  
 
 	return ;
 }
