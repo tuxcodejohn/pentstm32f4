@@ -1,4 +1,6 @@
-# PentSTM32-f4 
+# PentSTM32-f4  clangtest branch!!
+
+This branch is to test clang build capabilities... doesnt work quite yet
 
 a small template project to use with the stm32f4 discovery board (using the STM32F407VGT6)
 
