@@ -2,7 +2,7 @@
 #ifndef _usart1_H_
 #define _usart1_H_
 
-#define USART1_BAUDRATE (9600)
+#define MYUSART1_BAUDRATE (115200)
 
 void init_USART1(void );
 
