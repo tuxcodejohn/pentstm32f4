@@ -5,7 +5,9 @@ AR = arm-none-eabi-ar
 RANLIB = arm-none-eabi-ranlib
 
 CFLAGS = -Wall -O2 -mlittle-endian -mthumb
+
 CFLAGS += -mcpu=cortex-m4 -ffreestanding -nostdlib  -mfloat-abi=hard -Wl,--gc-sections -fsingle-precision-constant -funsigned-char -Wundef -Wsign-compare -Wunreachable-code -Wstrict-prototype
+
 CFLAGS += -I../inc -I../inc/device_support -I../inc/core_support -I../../core
 
 SRCS = \

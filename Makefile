@@ -10,7 +10,12 @@ else
 USB_DEVICE = /dev/ttyUSB0
 endif
 
+ifeq ($(FROMRAM),1)
+LSCRIPT=core/stm32_ram.ld
+else
 LSCRIPT=core/stm32_flash.ld
+endif 
+
 
 OPTIMIZATION = -O2
 DEBUG = -g
@@ -26,9 +31,11 @@ HEADERS=$(wildcard core/*.h *.h)
 ##  Compiler Options
 GCFLAGS=  -g $(OPTIMIZATION) -mlittle-endian -mthumb -Icore -Icore/inc -I. -Iusb
 GCFLAGS+= -funsigned-char -Wundef -Wsign-compare -Wunreachable-code -Wstrict-prototypes
+
 #GCFLAGS+= -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -Wl,--gc-sections -fsingle-precision-constant -DARM_MATH_CM4 
 #GCFLAGS+= -Wa,-adhlns=$(<:.c=.lst)
 GCFLAGS+= -ffreestanding -nostdlib -fno-math-errno
+
 
 # stm32f4_discovery lib
 GCFLAGS+=-ISTM32_DSP_Lib/inc
@@ -94,7 +101,7 @@ clean:
 
 #########################################################################
 
-flash: tools/flash/st-flash all
+flash: tools/flash/st-flash
 
 	tools/flash/st-flash write $(PROJECT).bin 0x08000000 
 
