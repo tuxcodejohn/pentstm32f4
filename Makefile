@@ -17,6 +17,24 @@ LSCRIPT=core/stm32_flash.ld
 endif 
 
 
+#  Compiler/Assembler Paths
+#
+ifeq ($(CLANGCOMPLETE),1)
+GCC=~/.vim/bin/cc_args.py arm-none-eabi-gcc
+else
+GCC=arm-none-eabi-gcc
+endif
+
+AS = arm-none-eabi-as
+OBJCOPY = arm-none-eabi-objcopy
+REMOVE = rm -f
+SIZE = arm-none-eabi-size
+
+
+
+
+
+
 OPTIMIZATION = -O2
 DEBUG = -g
 
@@ -48,13 +66,6 @@ GCFLAGS+=-ISTM32F4xx_StdPeriph_Driver/inc/core_support
 LDFLAGS = -mcpu=cortex-m4 -mthumb $(OPTIMIZATION) -nostartfiles  -T$(LSCRIPT) 
 LDFLAGS+= -LSTM32F4xx_StdPeriph_Driver/build -lSTM32F4xx_StdPeriph_Driver
 LDFLAGS+= -LSTM32_DSP_Lib/build -lSTM32_DSP_Lib  
-
-#  Compiler/Assembler Paths
-GCC = arm-none-eabi-gcc
-AS = arm-none-eabi-as
-OBJCOPY = arm-none-eabi-objcopy
-REMOVE = rm -f
-SIZE = arm-none-eabi-size
 
 #########################################################################
 
@@ -98,7 +109,11 @@ clean:
 
 #########################################################################
 
-flash: tools/flash/st-flash
-
+flash: tools/flash/st-flash $(PROJECT).bin 
 	tools/flash/st-flash write $(PROJECT).bin 0x08000000 
+
+clangcomplete: clean
+	$(MAKE) -C . CLANGCOMPLETE=1
+
+.PHONY: clangcomplete flash  clean stats
 
